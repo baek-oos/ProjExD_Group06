@@ -1,5 +1,6 @@
 import sys
 import os
+import random
 import pygame
 
 # 実行ファイルのディレクトリにカレントディレクトリを変更（素材やスコアファイルの読み込みエラー防止）
@@ -54,6 +55,11 @@ def main():
     # フォントの用意（E君・G君のUI表示用フォントが決まるまでの暫定）
     font = pygame.font.SysFont(None, 48)
     small_font = pygame.font.SysFont(None, 36)
+    fruit_image = pygame.image.load("appel.png")
+    fruit_rect = fruit_image.get_rect()
+    fruit_rect.x = random.randint(0, SCREEN_WIDTH - fruit_rect.width)
+    fruit_rect.y = -fruit_rect.height
+    fruit_speed = random.randint(3, 8)
 
     running = True
     while running:
@@ -94,6 +100,11 @@ def main():
         elif game_state == "PLAY":
             # ［B君の合流ポイント②: プレイヤーの移動更新］
             # ［C君의 合流ポイント①: アイテムの落下更新］
+            fruit_rect.y += fruit_speed
+            if fruit_rect.top > SCREEN_HEIGHT:
+                fruit_rect.x = random.randint(0, SCREEN_WIDTH - fruit_rect.width)
+                fruit_rect.y = -fruit_rect.height
+                fruit_speed = random.randint(3, 8)
             # ［D君の合流ポイント①: 当たり判定の計算と、current_scoreの加算・減算］
             
             # MVP確認用の暫定ルール（エンターキーを押したらゲーム終了・リザルトへ移動）
@@ -128,6 +139,7 @@ def main():
         elif game_state == "PLAY":
             # ［F君・B君の合流ポイント: プレイヤー（カゴ）の描画］
             # ［F君・C君の合流ポイント: アイテム（果物・爆弾）の描画］
+            screen.blit(fruit_image, fruit_rect)
             # ［E君の合流ポイント①: 画面上部への「現在のスコア」や「残り時間」の文字描画］
 
             # MVP確認用の暫定表示
