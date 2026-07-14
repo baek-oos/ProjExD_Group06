@@ -218,6 +218,18 @@ def main():
     pygame.display.set_caption("落ち物キャッチゲーム")
     clock = pygame.time.Clock()
 
+    #こうかとんの初期設定
+    player_img = pygame.image.load("9.png")  
+    player_rect = player_img.get_rect() 
+    player_rect.centerx = SCREEN_WIDTH // 2 
+    player_rect.bottom = SCREEN_HEIGHT - 20 
+    player_speed = 5
+    """
+    こうかとんの画像は笑顔の「9.png」を使用しています
+    こうかとんはゲーム開始時画面の下側、中央のにいます
+
+    """
+
     # ゲームの状態管理用変数
     # "TITLE": タイトル画面, "PLAY": ゲーム中, "GAMEOVER": ゲームオーバー（リザルト）画面
     game_state = "TITLE"
@@ -302,7 +314,7 @@ def main():
 
                 elif game_state == "PLAY":
                     # ［B君の合流ポイント①］
-                    # ゲーム中のキー入力（左右の移動など）は主にB君のモジュールに引き渡す
+                    #ここの処理は［B君の合流ポイント②: プレイヤーの移動更新］と重複するので記述していません
                     pass
 
                 elif game_state == "GAMEOVER":
@@ -318,6 +330,21 @@ def main():
 
         elif game_state == "PLAY":
             # ［B君の合流ポイント②: プレイヤーの移動更新］
+            keys = pygame.key.get_pressed() 
+            if keys[pygame.K_LEFT]: 
+                player_rect.x -= player_speed 
+            if keys[pygame.K_RIGHT]: 
+                player_rect.x += player_speed 
+            # 画面外に出ないようにする処理 
+            if player_rect.left < 0: 
+                player_rect.left = 0 
+            if player_rect.right > SCREEN_WIDTH: 
+                player_rect.right = SCREEN_WIDTH 
+            """
+            こうかとんの移動可能方向は左右のみです
+            画面外には行けないようにしています
+            """
+
             # ［C君의 合流ポイント①: アイテムの落下更新］
             
             fruit_rect.y += fruit_speed
@@ -379,6 +406,8 @@ def main():
             screen.blit(start_text, start_rect)
 
         elif game_state == "PLAY":
+            screen.blit(player_img, player_rect) 
+            """スクリーンにこうかとんを映しています"""
             # ［F君・B君の合流ポイント: プレイヤー（カゴ）の描画］
             # ［F君・C君の合流ポイント: アイテム（果物・爆弾）の描画］
             screen.blit(fruit_image, fruit_rect)
