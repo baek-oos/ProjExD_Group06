@@ -244,7 +244,7 @@ def main():
     current_score = 0  # 今回のスコア（D君がゲーム中に加算する）
     high_score = 0     # 最高スコア（G君がファイルから読み込む）
     time_left=30
-    high_score =load_highscore() #ゲーム機同時に最高スコアを読み込む
+    # high_score =load_highscore() #ゲーム機同時に最高スコアを読み込む
     score_manager = ScoreManager() #class のインスタンス化
 
     score_display=ScoreDisplay()
